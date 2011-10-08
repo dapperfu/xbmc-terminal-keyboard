@@ -37,20 +37,8 @@ int main (int argc, char **argv) {
 	ret1 = pthread_create( &ping_thread, NULL, xbmcPing, NULL);
 	while (ch = getch()) {
 		if (ch==3) break; // ^C
-		mvprintw(1,0,"Dec:\t%4d\nHex:\t0x%04x\n",ch,ch);
+		mvprintw(1,0,"Dec:\t%6d\nHex:\t0x%04x\n",ch,ch);
 		switch (ch) {
-			case 1:
-				xbmc.SendACTION("xbmc.ActivateWindow(virtualkeyboard)");
-				break;
-			case 181:
-				xbmc.SendACTION("XBMC.ActivateWindow(VideoLibrary,MovieTitles)");
-				break;
-			case 160:
-				xbmc.SendACTION("xbmc.ActivateWindow(VideoLibrary,TvShowTitles)");
-				break;
-			case 21:
-				xbmc.SendACTION("xbmc.ActivateWindow(MusicLibrary,Artists)");
-				break;
 			case KEY_LEFT:
 				xbmc.SendButton("left","R1",BTN_NO_REPEAT);
 				break;
@@ -86,6 +74,45 @@ int main (int argc, char **argv) {
 			case 56:
 			case 57:
 				xbmc.SendButton(ch + 0xF030,"KB",BTN_NO_REPEAT);
+				break;
+			// Volume Control
+			case 43:
+				xbmc.SendACTION("xbmc.VolumeUp");
+				break;
+			case 95: 
+				xbmc.SendACTION("xbmc.VolumeDown");
+				break;
+			// Page Commands
+			case 338:
+				xbmc.SendACTION("xbmc.PageDown");
+				break;
+			case 339:
+				xbmc.SendACTION("xbmc.PageDown");
+				break;
+			// F2 - F9. Doesn't interfere with F1 & F10 on XFCE Defaults.
+			case 266: // F2
+				xbmc.SendACTION("XBMC.ActivateWindow(VideoLibrary,MovieTitles)");
+				break;
+			case 267: // F3
+				xbmc.SendACTION("xbmc.ActivateWindow(VideoLibrary,TvShowTitles)");
+				break;
+			case 268: // F4
+				xbmc.SendACTION("xbmc.ActivateWindow(MusicLibrary,Artists)");
+				break;
+			case 269: // F5
+				xbmc.SendACTION("xbmc.ActivateWindow(home)");
+				break;
+			case 270: // F6
+				xbmc.SendACTION("xbmc.ActivateWindow(contextmenu)");
+				break;
+			case 271: // F7
+				xbmc.SendACTION("xbmc.ActivateWindow(infodialog)");
+				break;
+			case 272: // F8
+				xbmc.SendACTION("xbmc.ActivateWindow(settings)");
+				break;
+			case 273: // F9 
+				xbmc.SendACTION("xbmc.TakeScreenshot");
 				break;
 			default:
 				if (0x41<=ch && ch<=0x5a) {
