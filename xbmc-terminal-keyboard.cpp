@@ -7,7 +7,7 @@
 
 #define VERSION "1.0"
 
-static CXBMCClient xbmc("htpc.local");
+static CXBMCClient xbmc("localhost");
 static bool disconnected = false;
 static bool quit = false;
 
@@ -32,12 +32,12 @@ int main (int argc, char **argv) {
 	noecho();			/* Don't echo() while we do getch */
 
 	xbmc.SendHELO("Terminal Keyboard", ICON_NONE);
-    mvprintw(0,0,"Type any character to see it in bold\n");
+	mvprintw(0,0,"Type any character:\n");
 	sleep(1);
 	ret1 = pthread_create( &ping_thread, NULL, xbmcPing, NULL);
 	while (ch = getch()) {
 		if (ch==3) break; // ^C
-		mvprintw(1,0,"%3d     0x%2x\n",ch,ch);
+		mvprintw(1,0,"Dec:\t%4d\nHex:\t0x%04x\n",ch,ch);
 		switch (ch) {
 			case 1:
 				xbmc.SendACTION("xbmc.ActivateWindow(virtualkeyboard)");
@@ -87,31 +87,9 @@ int main (int argc, char **argv) {
 			case 57:
 				xbmc.SendButton(ch + 0xF030,"KB",BTN_NO_REPEAT);
 				break;
-			case 65:
-				xbmc.SendButton("A","KB",BTN_NO_REPEAT);
-				break;
-			case 66:
-				xbmc.SendButton("B","KB",BTN_NO_REPEAT);
-				break;
-			case 67:
-				xbmc.SendButton("C","KB",BTN_NO_REPEAT);
-				break;
-			case 97:
-				xbmc.SendButton("a","KB",BTN_NO_REPEAT);
-				break;
-			case 98:
-				xbmc.SendButton("b","KB",BTN_NO_REPEAT);
-				break;
-			case 99:
-				xbmc.SendButton("c","KB",BTN_NO_REPEAT);
-				break;
-			case 112:
-				xbmc.SendButton("p","KB",BTN_VKEY);
-				break;
 			default:
 				if (0x41<=ch && ch<=0x5a) {
 					ch+=0x2F000;
-					mvprintw(2,0,"%3d     0x%2x\n",ch,ch);
 					xbmc.SendButton(ch,"KB",BTN_NO_REPEAT);
 				} else if (97<=ch && ch<=109) {
 					mvprintw(2,0,"BTN_NO_REPEAT\n",ch,ch);
